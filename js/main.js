@@ -41,7 +41,7 @@ function fetchPosts(url) {
       json.forEach((post) => {
         const { id, title, body, userId } = post
         result +=
-          `<div class="post-list__post" data-id="${id}">
+          `<div class="post-list__post" data-id="${id}" data-user-name="${users[userId]}">
             <h3 class="post-list__title">${title}</h3>
             <p class="post-list__body">${body}</p>
             <p class="post-list__author">By: ${users[userId]}</p>
@@ -55,7 +55,7 @@ function fetchPosts(url) {
 fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
 
 // Show individual post
-function fetchOnePost(id) {
+function fetchOnePost(id, userName) {
   fetch('https://jsonplaceholder.typicode.com/posts/'+id+'')
     .then(response => {return response.json() })
     .then((json) => {
@@ -65,6 +65,7 @@ function fetchOnePost(id) {
           <img class="post-view__img" src="http://lorempixel.com/640/360">
           <h2 class="post-view__title">${title}</h2>
           <p class="post-view__body">${body}</p>
+          <p class="post-view__user-id">By: ${userName}</p>
         </div>`;
       document.getElementById('result').innerHTML = result;
       let footer =
@@ -107,7 +108,7 @@ function newPostSave() {
         const { id, name, username, email } = user
         users[id] = name
       })
-      // Call posts API endpoint to get post data
+      // Call posts API endpoint
       return fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
       body: JSON.stringify({
@@ -158,5 +159,6 @@ $(document).on('click', '.header', function(){
 // Show individual post from post list
 $(document).on('click', '.post-list__post', function(){
   var id = $(this).data('id');
-  fetchOnePost(id);
+  var userName = $(this).data('user-name');
+  fetchOnePost(id, userName);
 })

@@ -35,7 +35,6 @@ $max:          1440px;
 $blue:        #16b6d5;
 $darkblue:    #003366;
 $white:       #FFF;
-$yellow:      #FFFFE0;
 
 // ================ STYLES ================
 
@@ -69,7 +68,6 @@ body {
   -moz-transition: background 1s;
   -ms-transition: background 1s;
   -o-transition: background 1s;
-
 
   &:hover {
     background: $darkblue;
@@ -174,7 +172,7 @@ body {
   }
 }
 
-.result {
+#result {
   margin: 30px auto;
   max-width: 1200px;
 }

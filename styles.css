@@ -96,7 +96,7 @@ body {
   .post-view__post {
     max-width: 50%; } }
 
-.result {
+#result {
   margin: 30px auto;
   max-width: 1200px; }
 
