@@ -84,7 +84,7 @@ function newPost() {
     <label for="body">Body:</label>
     <textarea required id="new-post__body" name="new-post__body"></textarea>
     <label for="new-post__user-id">Your User ID:</label>
-    <input required type="number" id="new-post__user-id" name="new-post__user-id">
+    <input required type="number" min="1" max="10" id="new-post__user-id" name="new-post__user-id">
     <input id="new-post__submit" class="cta" type="submit" value="Submit">
   </form>`
   document.getElementById('result').innerHTML = result;
@@ -98,35 +98,46 @@ function newPostSave() {
   let title = document.getElementById('new-post__title').value;
   let body = document.getElementById('new-post__body').value;
   let userId = document.getElementById('new-post__user-id').value;
-  fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: title,
-      body: body,
-      userId: userId
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8"
-    }
-  })
-  .then(response => response.json())
-  .then((json) => {
-    // Display new post after saving
-    const { id, title, body, userId } = json
-    let result =
-      `<h3 class="alert">your post has been saved</h3>
-      <div class="post-view__post">
-        <h1 class="post-view__title">${title}</h1>
-        <p class="post-view__body">${body}</p>
-        <p class="post-view__user-id">By: User #${userId}</p>
-      </div>`
-    document.getElementById('result').innerHTML = result;
-    let footer =
-      `<button class="cta cta--all-posts">&#8592; See All Posts</button>
-      <button class="cta cta--new-post">Write Another Post</button>`
-    document.getElementById('footer').innerHTML = footer;
-  })
+  // Call user API endpoint to get usernames
+  fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response => response.json())
+    .then((json) => {
+      let users = {}
+      json.forEach((user) => {
+        const { id, name, username, email } = user
+        users[id] = name
+      })
+      // Call posts API endpoint to get post data
+      return fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: title,
+        body: body,
+        userId: userId
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(response => response.json())
+    .then((json) => {
+      // Display new post after saving
+      const { id, title, body, userId } = json
+      let result =
+        `<h3 class="alert">your post has been saved</h3>
+        <div class="post-view__post">
+          <h1 class="post-view__title">${title}</h1>
+          <p class="post-view__body">${body}</p>
+          <p class="post-view__user-id">By: ${users[userId]}</p>
+        </div>`
+      document.getElementById('result').innerHTML = result;
+      let footer =
+        `<button class="cta cta--all-posts">&#8592; See All Posts</button>
+        <button class="cta cta--new-post">Write Another Post</button>`
+      document.getElementById('footer').innerHTML = footer;
+    })
   .catch(error => console.error(error))
+  })
 }
 
 // 'Show All Posts' button
