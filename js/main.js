@@ -1,13 +1,22 @@
 // Fetch and list all posts
 function fetchPosts(url) {
-  // Call API
-  fetch(url)
+  // Call user API endpoint to get usernames
+  fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response => response.json())
+    .then((json) => {
+      let users = {}
+      json.forEach((user) => {
+        const { id, name, username, email } = user
+        users[id] = name
+      })
+      // Call posts API endpoint to get post data
+      return fetch(url)
     .then(response => {
       // Parse link header from response into pagination URLs
       var url;
       var linkHeaders = response.headers.get('Link').split(',');
       var links = {};
-      for(var i=0; i<linkHeaders.length; i++) {
+      for (var i=0; i<linkHeaders.length; i++) {
         var section = linkHeaders[i].split(';');
         var url = section[0].replace(/<(.*)>/, '$1').trim();
         var name = section[1].replace(/rel="(.*)"/, '$1').trim();
@@ -23,7 +32,7 @@ function fetchPosts(url) {
         footer +=
           `<button class="cta" onclick="fetchPosts('${links.next}')">Next Posts</button>`
       }
-        document.getElementById('footer').innerHTML = footer;
+      document.getElementById('footer').innerHTML = footer;
       return response.json()
     })
     // Manipulate JSON response data
@@ -35,12 +44,13 @@ function fetchPosts(url) {
           `<div class="post-list__post" data-id="${id}">
             <h3 class="post-list__title">${title}</h3>
             <p class="post-list__body">${body}</p>
-            <p class="post-list__author">Post Author: ${userId}</p>
+            <p class="post-list__author">By: ${users[userId]}</p>
           </div>`;
       })
       document.getElementById('result').innerHTML = result;
     })
     .catch(error => console.error(error))
+  })
 }
 fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
 
