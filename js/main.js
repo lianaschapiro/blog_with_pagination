@@ -65,27 +65,6 @@ function fetchOnePost(id) {
     .catch(error => console.error(error))
 }
 
-// 'Show All Posts' button
-$(document).on('click', '.cta--all-posts', function(){
-  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
-})
-
-// 'New Post' button
-$(document).on('click', '.cta--new-post', function(){
-  newPost();
-})
-
-// Header click event
-$(document).on('click', '.header', function(){
-  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
-})
-
-// Show individual post from post list
-$(document).on('click', '.post-list__post', function(){
-  var id = $(this).data('id');
-  fetchOnePost(id);
-})
-
 // Form to create a new post
 function newPost() {
   let result =
@@ -109,8 +88,6 @@ function newPostSave() {
   let title = document.getElementById('new-post__title').value;
   let body = document.getElementById('new-post__body').value;
   let userId = document.getElementById('new-post__user-id').value;
-  console.log(title)
-  console.log(body)
   fetch('https://jsonplaceholder.typicode.com/posts', {
     method: 'POST',
     body: JSON.stringify({
@@ -122,25 +99,43 @@ function newPostSave() {
       "Content-type": "application/json; charset=UTF-8"
     }
   })
-
   .then(response => response.json())
-  .then(json => newPostShow(json))
+  .then((json) => {
+    // Display new post after saving
+    const { id, title, body, userId } = json
+    let result =
+      `<h3 class="alert">your post has been saved</h3>
+      <div class="post-view__post">
+        <h1 class="post-view__title">${title}</h1>
+        <p class="post-view__body">${body}</p>
+        <p class="post-view__user-id">By: User #${userId}</p>
+      </div>`
+    document.getElementById('result').innerHTML = result;
+    let footer =
+      `<button class="cta cta--all-posts">&#8592; See All Posts</button>
+      <button class="cta cta--new-post">Write Another Post</button>`
+    document.getElementById('footer').innerHTML = footer;
+  })
   .catch(error => console.error(error))
 }
 
-// Display new post after saving
-function newPostShow(postData) {
-  const { id, title, body, userId } = postData
-  let result =
-    `<h3 class="alert">your post has been saved</h3>
-    <div class="post-view__post">
-      <h1 class="post-view__title">${title}</h1>
-      <p class="post-view__body">${body}</p>
-      <p class="post-view__user-id">By: User #${userId}</p>
-    </div>`
-  document.getElementById('result').innerHTML = result;
-  let footer =
-    `<button class="cta cta--all-posts">&#8592; See All Posts</button>
-    <button class="cta cta--new-post">Write Another Post</button>`
-  document.getElementById('footer').innerHTML = footer;
-}
+// 'Show All Posts' button
+$(document).on('click', '.cta--all-posts', function(){
+  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
+})
+
+// 'New Post' button
+$(document).on('click', '.cta--new-post', function(){
+  newPost();
+})
+
+// Header click event
+$(document).on('click', '.header', function(){
+  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
+})
+
+// Show individual post from post list
+$(document).on('click', '.post-list__post', function(){
+  var id = $(this).data('id');
+  fetchOnePost(id);
+})

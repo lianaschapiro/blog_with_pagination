@@ -44,3 +44,137 @@ $yellow:      #FFFFE0;
   margin: 0;
   padding: 0;
 }
+
+.alert {
+  color: #9E402C;
+  font-style: italic;
+  margin: 40px 0;
+}
+
+body {
+  margin: 30px 20px;
+  text-align: center;
+}
+
+.cta {
+  background: $blue;
+  color: $white;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 10px;
+  padding: 10px;
+  text-decoration: none;
+  transition: background 1s;
+  -webkit-transition: background 1s;
+  -moz-transition: background 1s;
+  -ms-transition: background 1s;
+  -o-transition: background 1s;
+
+
+  &:hover {
+    background: $darkblue;
+  }
+}
+
+.header {
+  color: $blue;
+  cursor: pointer;
+
+  @include breakpoint(tablet) {
+    margin-bottom: 25px;
+  }
+}
+
+#new-post {
+
+  &__body {
+    border: solid 1px $blue;
+    display: block;
+    height: 100px;
+    margin: 10px auto 20px;
+    outline: 0;
+    padding: 10px;
+    width: 200px;
+  }
+
+  &__title {
+    border: solid 1px $blue;
+    display: block;
+    margin: 10px auto 20px;
+    outline: 0;
+    padding: 10px;
+    width: 200px;
+  }
+
+  &__user-id {
+    border: solid 1px $blue;
+    display: block;
+    margin: 10px auto 20px;
+    outline: 0;
+    padding: 10px;
+    width: 100px;
+  }
+}
+
+.post-list {
+  text-align: center;
+
+  &__body {
+    font-style: italic;
+    margin: 10px 0;
+  }
+
+  &__post {
+    box-shadow: 0 0 13px 5px rgba(188, 188, 188, 0.3);
+    cursor: pointer;
+    margin: 30px 0;
+    padding: 10px;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.01);
+    }
+
+    @include breakpoint(tablet) {
+      max-width: 80%;
+      margin: 40px auto;
+    }
+
+    @include breakpoint(desktop) {
+      display: inline-block;
+      margin: 20px;
+      max-width: 40%;
+      min-height: 150px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.post-view {
+
+  &__body {
+    margin: 20px 0;
+  }
+
+  &__img {
+    margin: 0 0 15px;
+    max-width: 100%;
+  }
+
+  &__post {
+
+    @include breakpoint(tablet) {
+      margin: 0 auto;
+      max-width: 60%;
+    }
+
+    @include breakpoint(desktop) {
+      max-width: 50%;
+    }
+  }
+}
+
+.result {
+  margin: 30px auto;
+  max-width: 1200px;
+}

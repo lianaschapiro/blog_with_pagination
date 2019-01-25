@@ -3,4 +3,101 @@
   margin: 0;
   padding: 0; }
 
+.alert {
+  color: #9E402C;
+  font-style: italic;
+  margin: 40px 0; }
+
+body {
+  margin: 30px 20px;
+  text-align: center; }
+
+.cta {
+  background: #16b6d5;
+  color: #FFF;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 10px;
+  padding: 10px;
+  text-decoration: none;
+  transition: background 1s;
+  -webkit-transition: background 1s;
+  -moz-transition: background 1s;
+  -ms-transition: background 1s;
+  -o-transition: background 1s; }
+  .cta:hover {
+    background: #003366; }
+
+.header {
+  color: #16b6d5;
+  cursor: pointer; }
+  @media (min-width: 768px) {
+    .header {
+      margin-bottom: 25px; } }
+
+#new-post__body {
+  border: solid 1px #16b6d5;
+  display: block;
+  height: 100px;
+  margin: 10px auto 20px;
+  outline: 0;
+  padding: 10px;
+  width: 200px; }
+#new-post__title {
+  border: solid 1px #16b6d5;
+  display: block;
+  margin: 10px auto 20px;
+  outline: 0;
+  padding: 10px;
+  width: 200px; }
+#new-post__user-id {
+  border: solid 1px #16b6d5;
+  display: block;
+  margin: 10px auto 20px;
+  outline: 0;
+  padding: 10px;
+  width: 100px; }
+
+.post-list {
+  text-align: center; }
+  .post-list__body {
+    font-style: italic;
+    margin: 10px 0; }
+  .post-list__post {
+    box-shadow: 0 0 13px 5px rgba(188, 188, 188, 0.3);
+    cursor: pointer;
+    margin: 30px 0;
+    padding: 10px;
+    transition: all .2s ease-in-out; }
+    .post-list__post:hover {
+      transform: scale(1.01); }
+    @media (min-width: 768px) {
+      .post-list__post {
+        max-width: 80%;
+        margin: 40px auto; } }
+    @media (min-width: 1025px) {
+      .post-list__post {
+        display: inline-block;
+        margin: 20px;
+        max-width: 40%;
+        min-height: 150px;
+        vertical-align: middle; } }
+
+.post-view__body {
+  margin: 20px 0; }
+.post-view__img {
+  margin: 0 0 15px;
+  max-width: 100%; }
+@media (min-width: 768px) {
+  .post-view__post {
+    margin: 0 auto;
+    max-width: 60%; } }
+@media (min-width: 1025px) {
+  .post-view__post {
+    max-width: 50%; } }
+
+.result {
+  margin: 30px auto;
+  max-width: 1200px; }
+
 /*# sourceMappingURL=styles.css.map */
