@@ -1,0 +1,46 @@
+// ================ BREAKPOINTS ================
+
+$small:        768px;
+$tabLandscape: 960px;
+$medium:       1025px;
+$large:        1280px;
+$max:          1440px;
+
+@mixin breakpoint($point) {
+  @if $point == xlarge {
+    @media (min-width: $max) { @content; }
+  }
+  @if $point == large {
+    @media (min-width: $large) { @content; }
+  }
+  @if $point == desktop {
+    @media (min-width: $medium) { @content; }
+  }
+  @if $point == mobile {
+    @media (max-width: $small - 1)  { @content; }
+  }
+  @if $point == tablet {
+    @media (min-width: $small) { @content; }
+  }
+  @if $point == tabletPortrait {
+    @media (min-width: $small) and (max-width: $medium) and (orientation:portrait) { @content; }
+  }
+  @if $point == tabletLandscape {
+    @media (min-width: $tabLandscape) { @content; }
+  }
+}
+
+// ================ VARIABLES ================
+
+$blue:        #16b6d5;
+$darkblue:    #003366;
+$white:       #FFF;
+$yellow:      #FFFFE0;
+
+// ================ STYLES ================
+
+* {
+  font-family: 'Lato', sans-serif;
+  margin: 0;
+  padding: 0;
+}
