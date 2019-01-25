@@ -86,3 +86,20 @@ $(document).on('click', '.post-list__post', function(){
   fetchOnePost(id);
 })
 
+// Form to create a new post
+function newPost() {
+  let result =
+  `<form id="new-post__form" action="javascript:void(0);" onsubmit="newPostSave()">
+    <label for="new-post__title">Title:</label>
+    <input required type="text" id="new-post__title" name="new-post__title">
+    <label for="body">Body:</label>
+    <textarea required id="new-post__body" name="new-post__body"></textarea>
+    <label for="new-post__user-id">Your User ID:</label>
+    <input required type="number" id="new-post__user-id" name="new-post__user-id">
+    <input id="new-post__submit" class="cta" type="submit" value="Submit">
+  </form>`
+  document.getElementById('result').innerHTML = result;
+  let footer =
+    `<button class="cta cta--all-posts">&#8592; See All Posts</button>`
+  document.getElementById('footer').innerHTML = footer;
+}
