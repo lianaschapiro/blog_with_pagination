@@ -1,3 +1,8 @@
+window.onload = function() {
+  const footer = document.getElementById('footer'),
+        result = document.getElementById('result')
+}
+
 // Fetch and list all posts
 function fetchPosts(url) {
   // Call user API endpoint to get usernames
@@ -23,31 +28,31 @@ function fetchPosts(url) {
         links[name] = url;
       }
       // Populate footer with pagination buttons
-      let footer = ''
+      let footerContent = ''
       if (links.prev != undefined) {
-        footer +=
+        footerContent +=
           `<button class="cta" onclick="fetchPosts('${links.prev}')">Previous Posts</button>`
       }
       if (links.next != undefined) {
-        footer +=
+        footerContent +=
           `<button class="cta" onclick="fetchPosts('${links.next}')">Next Posts</button>`
       }
-      document.getElementById('footer').innerHTML = footer;
+      footer.innerHTML = footerContent;
       return response.json()
     })
     // Manipulate JSON response data
     .then((json) => {
-      let result = ''
+      let resultContent = ''
       json.forEach((post) => {
         const { id, title, body, userId } = post
-        result +=
+        resultContent +=
           `<div class="post-list__post" data-id="${id}" data-user-name="${users[userId]}">
             <h3 class="post-list__title">${title}</h3>
             <p class="post-list__body">${body}</p>
             <p class="post-list__author">By: ${users[userId]}</p>
           </div>`;
       })
-      document.getElementById('result').innerHTML = result;
+      result.innerHTML = resultContent;
     })
     .catch(error => console.error(error))
   })
@@ -60,25 +65,25 @@ function fetchOnePost(id, userName) {
     .then(response => {return response.json() })
     .then((json) => {
       const { id, title, body, userId } = json
-      let result =
+      let resultContent =
         `<div class="post-view__post">
           <img class="post-view__img" src="http://lorempixel.com/640/360">
           <h2 class="post-view__title">${title}</h2>
           <p class="post-view__body">${body}</p>
           <p class="post-view__user-id">By: ${userName}</p>
         </div>`;
-      document.getElementById('result').innerHTML = result;
-      let footer =
+      result.innerHTML = resultContent;
+      let footerContent =
         `<button class="cta cta--all-posts">&#8592; See All Posts</button>
         <button class="cta cta--new-post">New Post</button>`
-      document.getElementById('footer').innerHTML = footer;
+      footer.innerHTML = footerContent;
     })
     .catch(error => console.error(error))
 }
 
 // Form to create a new post
 function newPost() {
-  let result =
+  let resultContent =
   `<form id="new-post__form" action="javascript:void(0);" onsubmit="newPostSave()">
     <label for="new-post__title">Title:</label>
     <input required type="text" id="new-post__title" name="new-post__title">
@@ -88,10 +93,10 @@ function newPost() {
     <input required type="number" min="1" max="10" id="new-post__user-id" name="new-post__user-id">
     <input id="new-post__submit" class="cta" type="submit" value="Submit">
   </form>`
-  document.getElementById('result').innerHTML = result;
-  let footer =
+  result.innerHTML = resultContent;
+  let footerContent =
     `<button class="cta cta--all-posts">&#8592; See All Posts</button>`
-  document.getElementById('footer').innerHTML = footer;
+  footer.innerHTML = footerContent;
 }
 
 // Save new post with POST request
@@ -124,18 +129,18 @@ function newPostSave() {
     .then((json) => {
       // Display new post after saving
       const { id, title, body, userId } = json
-      let result =
+      let resultContent =
         `<h3 class="alert">your post has been saved</h3>
         <div class="post-view__post">
           <h1 class="post-view__title">${title}</h1>
           <p class="post-view__body">${body}</p>
           <p class="post-view__user-id">By: ${users[userId]}</p>
         </div>`
-      document.getElementById('result').innerHTML = result;
-      let footer =
+      result.innerHTML = resultContent;
+      let footerContent =
         `<button class="cta cta--all-posts">&#8592; See All Posts</button>
         <button class="cta cta--new-post">Write Another Post</button>`
-      document.getElementById('footer').innerHTML = footer;
+      footer.innerHTML = footerContent;
     })
   .catch(error => console.error(error))
   })
