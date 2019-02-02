@@ -6,11 +6,13 @@ window.onload = function() {
   document.getElementById('header').addEventListener("click", function(){
     fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
   })
+
+  fetchUsers();
+  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
 }
 
-// Fetch and list all posts
-function fetchPosts(url) {
-  // Call user API endpoint to get usernames
+function fetchUsers() {
+  console.log('fetch users')
   fetch('https://jsonplaceholder.typicode.com/users')
     .then(response => response.json())
     .then((json) => {
@@ -21,8 +23,12 @@ function fetchPosts(url) {
       })
       // Save user data to local storage to prevent repeat calls to the user endpoint
       localStorage.setItem('users', JSON.stringify(users));
-      // Call posts API endpoint to get post data
-      return fetch(url)
+    });
+}
+
+// Fetch and list all posts
+function fetchPosts(url) {
+  fetch(url)
     .then(response => {
       // Parse link header from response into pagination URLs
       var url;
@@ -49,6 +55,7 @@ function fetchPosts(url) {
     })
     // Manipulate JSON response data
     .then((json) => {
+      const users  = JSON.parse(localStorage.getItem('users'))
       let resultContent = ''
       json.forEach((post) => {
         const { id, title, body, userId } = post
@@ -62,9 +69,7 @@ function fetchPosts(url) {
       result.innerHTML = resultContent;
     })
     .catch(error => console.error(error))
-  })
 }
-fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
 
 // Show individual post
 function fetchOnePost(id, userName) {
