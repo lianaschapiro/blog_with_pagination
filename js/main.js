@@ -11,10 +11,11 @@ function init() {
   fetchPosts(`${apiUrl}/posts?_page=1`);
 }
 
+// Get users from API
 function fetchUsers() {
   fetch(`${apiUrl}/users`)
     .then(response => response.json())
-    .then((json) => {
+    .then(json => {
       let users = {}
       json.forEach((user) => {
         const { id, name, username, email } = user
@@ -25,7 +26,7 @@ function fetchUsers() {
     });
 }
 
-// Fetch and list all posts
+// Get posts from API
 function fetchPosts(url) {
   fetch(url)
     .then(response => {
@@ -53,7 +54,7 @@ function fetchPosts(url) {
       return response.json()
     })
     // Manipulate JSON response data
-    .then((json) => {
+    .then(json => {
       const users  = JSON.parse(localStorage.getItem('users'))
       let resultContent = ''
       json.forEach((post) => {
@@ -74,22 +75,24 @@ function fetchPosts(url) {
 function fetchOnePost(id, userName) {
   fetch(`${apiUrl}/posts/${id}`)
     .then(response => {return response.json() })
-    .then((json) => {
-      const { id, title, body, userId } = json
-      let resultContent =
-        `<div class="post-view__post">
-          <img class="post-view__img" src="http://lorempixel.com/640/360">
-          <h2 class="post-view__title">${title}</h2>
-          <p class="post-view__body">${body}</p>
-          <p class="post-view__user-id">By: ${userName}</p>
-        </div>`;
-      result.innerHTML = resultContent;
-      let footerContent =
-        `<button class="cta cta--all-posts">&#8592; See All Posts</button>
-        <button class="cta cta--new-post">New Post</button>`
-      footer.innerHTML = footerContent;
-    })
+    .then(json => showPost(json, userName))
     .catch(error => console.error(error))
+}
+
+function showPost(json, userName) {
+  const { id, title, body, userId } = json;
+  let resultContent =
+    `<div class="post-view__post">
+      <img class="post-view__img" src="http://lorempixel.com/640/360">
+      <h2 class="post-view__title">${title}</h2>
+      <p class="post-view__body">${body}</p>
+      <p class="post-view__user-id">By: ${userName}</p>
+    </div>`;
+  result.innerHTML = resultContent;
+  let footerContent =
+    `<button class="cta cta--all-posts">&#8592; See All Posts</button>
+    <button class="cta cta--new-post">New Post</button>`;
+  footer.innerHTML = footerContent;
 }
 
 // Form to create a new post
@@ -103,7 +106,7 @@ function newPost() {
       <label for="new-post__user-id">Your User ID:</label>
       <input required type="number" min="1" max="10" id="new-post__user-id" name="new-post__user-id">
       <input id="new-post__submit" class="cta" type="submit" value="Submit">
-    </form>`
+    </form>`;
   result.innerHTML = resultContent;
   let footerContent =
     `<button class="cta cta--all-posts">&#8592; See All Posts</button>`
@@ -137,11 +140,11 @@ function newPostSave() {
         <h1 class="post-view__title">${title}</h1>
         <p class="post-view__body">${body}</p>
         <p class="post-view__user-id">By: ${users[userId]}</p>
-      </div>`
+      </div>`;
     result.innerHTML = resultContent;
     let footerContent =
       `<button class="cta cta--all-posts">&#8592; See All Posts</button>
-      <button class="cta cta--new-post">Write Another Post</button>`
+      <button class="cta cta--new-post">Write Another Post</button>`;
     footer.innerHTML = footerContent;
   })
   .catch(error => console.error(error))
