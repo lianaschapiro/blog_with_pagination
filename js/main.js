@@ -1,19 +1,18 @@
-window.onload = function() {
-  const footer = document.getElementById('footer'),
-        result = document.getElementById('result');
+const apiUrl = 'https://jsonplaceholder.typicode.com',
+      footer = document.getElementById('footer'),
+      result = document.getElementById('result');
 
-  // Header click event
-  document.getElementById('header').addEventListener("click", function(){
-    fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
-  })
+init();
 
+// ======================== FUNCTIONS ===========================
+
+function init() {
   fetchUsers();
-  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
+  fetchPosts(`${apiUrl}/posts?_page=1`);
 }
 
 function fetchUsers() {
-  console.log('fetch users')
-  fetch('https://jsonplaceholder.typicode.com/users')
+  fetch(`${apiUrl}/users`)
     .then(response => response.json())
     .then((json) => {
       let users = {}
@@ -73,7 +72,7 @@ function fetchPosts(url) {
 
 // Show individual post
 function fetchOnePost(id, userName) {
-  fetch('https://jsonplaceholder.typicode.com/posts/'+id+'')
+  fetch(`${apiUrl}/posts/${id}`)
     .then(response => {return response.json() })
     .then((json) => {
       const { id, title, body, userId } = json
@@ -117,7 +116,7 @@ function newPostSave() {
         title  = document.getElementById('new-post__title').value,
         users  = JSON.parse(localStorage.getItem('users')),
         userId = document.getElementById('new-post__user-id').value;
-  fetch('https://jsonplaceholder.typicode.com/posts', {
+  fetch(`${apiUrl}/posts`, {
     method: 'POST',
     body: JSON.stringify({
       title: title,
@@ -148,11 +147,16 @@ function newPostSave() {
   .catch(error => console.error(error))
 }
 
-// ===== Click events for dynamically-created elements =====
+// ==================== CLICK EVENTS ====================
+
+// Header click event
+document.getElementById('header').addEventListener("click", function(){
+  fetchPosts(`${apiUrl}/posts?_page=1`);
+})
 
 // 'Show All Posts' button
 $(document).on('click', '.cta--all-posts', function(){
-  fetchPosts('https://jsonplaceholder.typicode.com/posts?_page=1');
+  fetchPosts(`${apiUrl}/posts?_page=1`);
 })
 
 // 'New Post' button
@@ -166,4 +170,3 @@ $(document).on('click', '.post-list__post', function(){
   var userName = $(this).data('user-name');
   fetchOnePost(id, userName);
 })
-
