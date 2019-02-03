@@ -26,7 +26,7 @@ function fetchUsers() {
     });
 }
 
-// Get posts from API
+// Get all posts from API
 function fetchPosts(url) {
   fetch(url)
     .then(response => {
@@ -53,34 +53,36 @@ function fetchPosts(url) {
       footer.innerHTML = footerContent;
       return response.json()
     })
-    // Manipulate JSON response data
-    .then(json => {
-      const users  = JSON.parse(localStorage.getItem('users'))
-      let resultContent = ''
-      json.forEach((post) => {
-        const { id, title, body, userId } = post
-        resultContent +=
-          `<div class="post-list__post" data-id="${id}" data-user-name="${users[userId]}">
-            <h3 class="post-list__title">${title}</h3>
-            <p class="post-list__body">${body}</p>
-            <p class="post-list__author">By: ${users[userId]}</p>
-          </div>`;
-      })
-      result.innerHTML = resultContent;
-    })
+    .then(json => listPosts(json))
     .catch(error => console.error(error))
 }
+
+// List all posts
+function listPosts(json) {
+  const users  = JSON.parse(localStorage.getItem('users'))
+  let resultContent = ''
+  json.forEach((post) => {
+    const { id, title, body, userId } = post
+    resultContent +=
+      `<div class="post-list__post" data-id="${id}" data-user-name="${users[userId]}">
+        <h3 class="post-list__title">${title}</h3>
+        <p class="post-list__body">${body}</p>
+        <p class="post-list__author">By: ${users[userId]}</p>
+      </div>`;
+  })
+  result.innerHTML = resultContent;
+}
+
+// Get individual post from API
+// function fetchOnePost(id, userName) {
+//   fetch(`${apiUrl}/posts/${id}`)
+//     .then(response => {return response.json() })
+//     .then(json => showPost(json, userName))
+//     .catch(error => console.error(error))
+// }
 
 // Show individual post
-function fetchOnePost(id, userName) {
-  fetch(`${apiUrl}/posts/${id}`)
-    .then(response => {return response.json() })
-    .then(json => showPost(json, userName))
-    .catch(error => console.error(error))
-}
-
-function showPost(json, userName) {
-  const { id, title, body, userId } = json;
+function showPost(body, title, userName) {
   let resultContent =
     `<div class="post-view__post">
       <img class="post-view__img" src="http://lorempixel.com/640/360">
@@ -169,7 +171,8 @@ $(document).on('click', '.cta--new-post', function(){
 
 // Show individual post from post list
 $(document).on('click', '.post-list__post', function(){
-  var id = $(this).data('id');
-  var userName = $(this).data('user-name');
-  fetchOnePost(id, userName);
+  const body     = $(this).find('.post-list__body').html(),
+        title    = $(this).find('.post-list__title').html(),
+        userName = $(this).data('user-name');
+  showPost(body, title, userName);
 })
