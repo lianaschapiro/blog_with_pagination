@@ -30,14 +30,13 @@ function fetchUsers() {
 function fetchPosts(url) {
   fetch(url)
     .then(response => {
-      // Parse link header from response into pagination URLs
-      var url;
-      var linkHeaders = response.headers.get('Link').split(',');
-      var links = {};
-      for (var i=0; i<linkHeaders.length; i++) {
-        var section = linkHeaders[i].split(';');
-        var url = section[0].replace(/<(.*)>/, '$1').trim();
-        var name = section[1].replace(/rel="(.*)"/, '$1').trim();
+      // Parse link response header into pagination URLs
+      const linkHeaders = response.headers.get('Link').split(','),
+            links       = {};
+      for (let i=0; i<linkHeaders.length; i++) {
+        const section = linkHeaders[i].split(';'),
+              url     = section[0].replace(/<(.*)>/, '$1').trim(),
+              name    = section[1].replace(/rel="(.*)"/, '$1').trim();
         links[name] = url;
       }
       // Populate footer with pagination buttons
@@ -111,7 +110,6 @@ function newPost() {
 function newPostSave() {
   const body   = document.getElementById('new-post__body').value,
         title  = document.getElementById('new-post__title').value,
-        users  = JSON.parse(localStorage.getItem('users')),
         userId = document.getElementById('new-post__user-id').value;
   fetch(`${apiUrl}/posts`, {
     method: 'POST',
@@ -125,23 +123,25 @@ function newPostSave() {
     }
   })
   .then(response => response.json())
-  .then((json) => {
-    // Display new post after saving
-    const { id, title, body, userId } = json
-    let resultContent =
-      `<h3 class="alert">your post has been saved</h3>
-      <div class="post-view__post">
-        <h1 class="post-view__title">${title}</h1>
-        <p class="post-view__body">${body}</p>
-        <p class="post-view__user-id">By: ${users[userId]}</p>
-      </div>`;
-    result.innerHTML = resultContent;
-    let footerContent =
-      `<button class="cta cta--all-posts">&#8592; See All Posts</button>
-      <button class="cta cta--new-post">Write Another Post</button>`;
-    footer.innerHTML = footerContent;
-  })
+  .then(json => newPostShow(json))
   .catch(error => console.error(error))
+}
+
+function newPostShow(json) {
+  const { id, title, body, userId } = json,
+        users  = JSON.parse(localStorage.getItem('users'));
+  let resultContent =
+    `<h3 class="alert">your post has been saved</h3>
+    <div class="post-view__post">
+      <h1 class="post-view__title">${title}</h1>
+      <p class="post-view__body">${body}</p>
+      <p class="post-view__user-id">By: ${users[userId]}</p>
+    </div>`;
+  result.innerHTML = resultContent;
+  let footerContent =
+    `<button class="cta cta--all-posts">&#8592; See All Posts</button>
+    <button class="cta cta--new-post">Write Another Post</button>`;
+  footer.innerHTML = footerContent;
 }
 
 // ==================== CLICK EVENTS ====================
