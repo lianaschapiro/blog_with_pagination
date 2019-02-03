@@ -73,14 +73,6 @@ function listPosts(json) {
   result.innerHTML = resultContent;
 }
 
-// Get individual post from API
-// function fetchOnePost(id, userName) {
-//   fetch(`${apiUrl}/posts/${id}`)
-//     .then(response => {return response.json() })
-//     .then(json => showPost(json, userName))
-//     .catch(error => console.error(error))
-// }
-
 // Show individual post
 function showPost(body, title, userName) {
   let resultContent =
@@ -160,19 +152,26 @@ document.getElementById('header').addEventListener("click", function(){
 })
 
 // 'Show All Posts' button
-$(document).on('click', '.cta--all-posts', function(){
-  fetchPosts(`${apiUrl}/posts?_page=1`);
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('cta--all-posts')) {
+    fetchPosts(`${apiUrl}/posts?_page=1`);
+  }
 })
 
 // 'New Post' button
-$(document).on('click', '.cta--new-post', function(){
-  newPost();
+document.getElementById('footer').addEventListener('click', function (event) {
+  if (event.target.classList.contains('cta--new-post')) {
+    newPost();
+  }
 })
 
 // Show individual post from post list
-$(document).on('click', '.post-list__post', function(){
-  const body     = $(this).find('.post-list__body').html(),
-        title    = $(this).find('.post-list__title').html(),
-        userName = $(this).data('user-name');
+document.getElementById('result').addEventListener('click', function (event) {
+  const post = event.target.closest('.post-list__post')
+  if (post != null){
+  const body     = post.getElementsByClassName('post-list__body')[0].innerHTML,
+        title    = post.getElementsByClassName('post-list__title')[0].innerHTML,
+        userName = post.getAttribute('data-user-name');
   showPost(body, title, userName);
+  }
 })
